@@ -6,8 +6,10 @@ import type { NextConfig } from "next";
 const appDir = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
-  /** Build cache on local disk — Seagate drive breaks Turbopack persistence. */
-  distDir: path.join(os.tmpdir(), "main-desk-next"),
+  /** Local Seagate dev only — Vercel must use default `.next`. */
+  ...(process.env.VERCEL
+    ? {}
+    : { distDir: path.join(os.tmpdir(), "main-desk-next") }),
   turbopack: {
     root: appDir,
   },

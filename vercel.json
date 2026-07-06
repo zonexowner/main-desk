@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/jobs/update-signals",
-      "schedule": "0 8,14,20 * * *"
+      "schedule": "0 8 * * *"
     },
     {
       "path": "/api/jobs/generate-signals",
