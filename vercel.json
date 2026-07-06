@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/jobs/update-signals",
+      "schedule": "0 8,14,20 * * *"
+    },
+    {
+      "path": "/api/jobs/generate-signals",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/jobs/tune-brains",
+      "schedule": "0 7 * * 0"
+    }
+  ]
+}

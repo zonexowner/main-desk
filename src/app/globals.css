@@ -1,0 +1,294 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #07090d;
+  --color-surface: #0e1218;
+  --color-surface2: #151b24;
+  --color-border: #1f2835;
+  --color-border2: #2c3848;
+  --color-ink: #e6ebf2;
+  --color-muted: #7e8b9d;
+  --color-faint: #55637a;
+  --color-accent: #f0b429;
+  --color-up: #35d399;
+  --color-down: #f26d78;
+  --color-info: #6cb6ff;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html {
+  color-scheme: dark;
+  background: var(--color-bg);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-feature-settings: "tnum";
+}
+
+/* Numbers align in tables and tickers everywhere. */
+.font-mono,
+table,
+[data-num] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Micro-label: the one uppercase style used desk-wide. */
+.microlabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Panel: the one container style. Sharp corners, 1px border, surface tier. */
+.panel {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+}
+
+.panel-interactive {
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease,
+    opacity 150ms ease;
+}
+
+.panel-interactive:hover {
+  border-color: var(--color-border2);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.22);
+}
+
+/* Buttons — 44px touch targets, amber primary, forensic discipline. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  min-height: 44px;
+  padding: 0.625rem 1rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease,
+    opacity 150ms ease;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-sm {
+  min-height: 44px;
+  padding: 0.5rem 0.875rem;
+  font-size: 10px;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: #0c0e12;
+  border-color: color-mix(in srgb, var(--color-accent) 78%, #000);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--color-accent) 55%, #fff),
+    0 2px 6px rgb(0 0 0 / 0.35);
+}
+
+.btn-primary:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: color-mix(in srgb, var(--color-accent) 94%, #fff);
+  transform: translateY(-1px);
+  box-shadow:
+    0 2px 0 color-mix(in srgb, var(--color-accent) 55%, #fff),
+    0 6px 14px rgb(0 0 0 / 0.38);
+}
+
+.btn-primary:active:not(:disabled):not([aria-disabled="true"]) {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.32);
+}
+
+.btn-secondary {
+  background: var(--color-surface);
+  color: var(--color-muted);
+  border-color: var(--color-border2);
+}
+
+.btn-secondary:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--color-surface2);
+  color: var(--color-ink);
+  border-color: color-mix(in srgb, var(--color-border2) 70%, var(--color-ink));
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-muted);
+  border-color: transparent;
+}
+
+.btn-ghost:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--color-surface2);
+  color: var(--color-ink);
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+  text-decoration: none;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.nav-link:hover {
+  color: var(--color-ink);
+  background: var(--color-surface2);
+  border-color: var(--color-border);
+}
+
+.nav-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Motion with purpose: 150ms, no bounce. */
+button,
+a,
+summary,
+.panel {
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease,
+    opacity 150ms ease;
+}
+
+/* Native disclosure without the marker; used for post-mortems + drivers. */
+summary {
+  cursor: pointer;
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+details[open] > summary .disclosure-caret {
+  transform: rotate(90deg);
+}
+.disclosure-caret {
+  display: inline-block;
+  transition: transform 150ms ease;
+}
+
+/* Loading skeleton */
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+.skeleton {
+  animation: skeleton-pulse 1.6s ease-in-out infinite;
+  background: linear-gradient(
+    180deg,
+    var(--color-surface2) 0%,
+    color-mix(in srgb, var(--color-surface2) 85%, var(--color-border)) 100%
+  );
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+}
+
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.skeleton-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.03) 50%,
+    transparent 100%
+  );
+  animation: skeleton-sweep 2.2s ease-in-out infinite;
+}
+@keyframes skeleton-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Level bar track */
+.level-track {
+  position: relative;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--color-surface2);
+  box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+/* Ticker strip container */
+.ticker-strip {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  padding: 0.25rem 0.5rem;
+}
+
+/* Live dot pulse — subtle, forensic, not casino. */
+@keyframes live-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.live-dot {
+  animation: live-dot 2.4s ease-in-out infinite;
+}
