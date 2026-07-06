@@ -1,9 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import { BrainPanel } from "@/components/BrainPanel";
 import { SignalCard } from "@/components/SignalCard";
+import {
+  runGenerateSignalsAction,
+  runUpdateSignalsAction,
+} from "@/lib/actions/desk-jobs";
 import type { DeskPayload } from "@/lib/services/desk-data";
 import type { Signal } from "@/lib/types";
 
@@ -21,6 +25,7 @@ export function DeskView({ initial }: { initial: DeskPayload }) {
   const [tab, setTab] = useState<Tab>("running");
   const [data, setData] = useState<DeskPayload>(initial);
   const [jobMsg, setJobMsg] = useState<string | null>(null);
+  const [jobPending, startJob] = useTransition();
 
   const load = useCallback(async () => {
     try {
@@ -49,26 +54,22 @@ export function DeskView({ initial }: { initial: DeskPayload }) {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const runGenerate = async () => {
+  const runGenerate = () => {
     setJobMsg("Generating…");
-    const res = await fetch("/api/jobs/generate-signals", { method: "POST" });
-    const j = await res.json();
-    setJobMsg(
-      j.created?.length
-        ? `Created ${j.created.length} signal(s)`
-        : j.skipped?.join("; ") || j.error || "No new signals",
-    );
-    await load();
+    startJob(async () => {
+      const result = await runGenerateSignalsAction();
+      setJobMsg(result.ok ? result.message : result.error);
+      await load();
+    });
   };
 
-  const runUpdate = async () => {
+  const runUpdate = () => {
     setJobMsg("Checking prices…");
-    const res = await fetch("/api/jobs/update-signals", { method: "POST" });
-    const j = await res.json();
-    setJobMsg(
-      `Updated ${j.updated ?? 0} signal(s)${j.error ? ` — ${j.error}` : ""}`,
-    );
-    await load();
+    startJob(async () => {
+      const result = await runUpdateSignalsAction();
+      setJobMsg(result.ok ? result.message : result.error);
+      await load();
+    });
   };
 
   const isPro = data.access.tier === "pro" || !data.access.paywallActive;
@@ -114,14 +115,16 @@ export function DeskView({ initial }: { initial: DeskPayload }) {
         <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
           <button
             type="button"
-            onClick={() => void runGenerate()}
+            onClick={runGenerate}
+            disabled={jobPending}
             className="btn btn-primary btn-sm"
           >
             Generate
           </button>
           <button
             type="button"
-            onClick={() => void runUpdate()}
+            onClick={runUpdate}
+            disabled={jobPending}
             className="btn btn-secondary btn-sm"
           >
             Update SL·TP
